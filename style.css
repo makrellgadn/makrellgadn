@@ -1,0 +1,375 @@
+/* Custom Theme Colors */
+:root {
+    --background: #ffffff;
+    --foreground: #000000;
+    --primary: #6366f1;
+    --border: #e5e7eb;
+    --input: #f3f4f6;
+    --ring: #d1d5db;
+    --primary-foreground: #ffffff;
+    --secondary: #fbbf24;
+    --secondary-foreground: #000000;
+    --accent: #10b981;
+    --accent-foreground: #ffffff;
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+    --muted: #9ca3af;
+    --muted-foreground: #ffffff;
+    --card: #f9fafb;
+    --card-foreground: #1f2937;
+    --popover: #ffffff;
+    --popover-foreground: #1f2937;
+}
+
+.dark {
+    --background: #1f2937;
+    --foreground: #f9fafb;
+    --primary: #4f46e5;
+    --border: #374151;
+    --input: #374151;
+    --ring: #4b5563;
+    --primary-foreground: #f9fafb;
+    --secondary: #fbbf24;
+    --secondary-foreground: #000000;
+    --accent: #10b981;
+    --accent-foreground: #ffffff;
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+    --muted: #6b7280;
+    --muted-foreground: #f9fafb;
+    --card: #374151;
+    --card-foreground: #f9fafb;
+    --popover: #1f2937;
+    --popover-foreground: #f9fafb;
+}
+
+body {
+    margin: 0;
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: sans-serif;
+}
+
+a {
+    color: #fff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Header / Top Menu */
+.site-header {
+    display: flex;
+    justify-content: center;
+    padding: 1rem 0;
+}
+
+.top-menu {
+    width: 100%;
+    max-width: 768px;
+    height: 100px;
+    background-color: var(--card);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0 0 1rem;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+    .top-menu {
+      border-radius: 0;
+      padding: 0;
+    }
+}
+
+.top-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+@media (max-width: 768px) {
+    .top-left {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+      gap: 0;
+    }
+}
+
+.top-title {
+    font-size: 1.875rem;
+    font-weight: bold;
+}
+
+.current-datetime {
+    font-size: 1.125rem;
+}
+
+/* Top-right background image */
+.top-right {
+    width: 50%;
+    height: 100%;
+    background-image: url('https://placehold.co/600x100.svg?text=Placeholder');
+    background-size: cover;
+    background-position: center;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .top-right {
+      display: none;
+    }
+}
+  
+
+
+.main-wrapper {
+    margin: 0 auto;
+    max-width: 1280px;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 768px) {
+    .main-wrapper {
+        flex-direction: row;
+    }
+}
+
+/* Navigation Sidebar */
+.nav-container {
+    position: relative;
+    width: 100%;
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+}
+
+@media (min-width: 768px) {
+    .nav-container {
+        width: 15%;
+        height: auto;
+    }
+}
+
+.nav-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: opacity 0.5s;
+    border-radius: 8px;
+}
+
+/* Utility class for opacity toggle */
+.opacity-0 {
+    opacity: 0;
+}
+
+#toggle-nav-overlay {
+    outline: none;
+    border-radius: 50%;
+    min-width: 64px;
+    min-height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    cursor: pointer;
+    padding: 0;
+    position: absolute;
+    left: calc(50% - 32px);
+    top: 100px;
+}
+
+#toggle-nav-overlay:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.menu-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.nav-menu {
+    margin-top: 1rem;
+    padding: 0;
+    list-style: none;
+    border-radius: 8px;
+}
+
+.nav-menu li {
+    margin-bottom: 1rem;
+}
+
+.nav-menu a {
+    display: block;
+    padding: 0.5rem;
+    font-size: 1.125rem;
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-menu a:hover,
+.nav-menu a:focus {
+    background-color: var(--border);
+    color: var(--foreground);
+    outline: none;
+    box-shadow: 0 0 0 3px var(--ring);
+}
+
+/* Main Content Area */
+.main-content {
+    flex: 1;
+    padding: 1rem;
+}
+@media (max-width: 768px) {
+    .main-content {
+      padding: 0;
+    }
+}
+
+/* Weather Section */
+.weather-section {
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    padding: 1rem;
+    background-color: var(--card);
+    color: var(--card-foreground);
+    min-height: 20vh;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+    .weather-section {
+      width: 100%;
+      border-radius: 0;
+      margin-top: 1rem;
+      box-sizing: border-box;
+    }
+}
+
+.weather-header {
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.weather-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.weather-detail {
+    flex: 1 1 45%;
+}
+
+/* RSS Feed Section */
+.rss-feed-container {
+    margin-bottom: 1rem;
+    overflow: hidden;
+    height: 50px;
+    position: relative;
+}
+
+.rss-feed {
+    display: flex;
+    gap: 2rem;
+    position: absolute;
+    white-space: nowrap;
+}
+
+.rss-item {
+    white-space: nowrap;
+}
+
+.rss-item a {
+    text-decoration: none;
+    color: inherit;
+    transition: text-decoration 0.3s;
+}
+
+.rss-item a:hover {
+    text-decoration: underline;
+}
+
+/* Articles Grid */
+.articles-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    padding: 0 1rem;
+}
+
+.articles-grid a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.article-card {
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: var(--card);
+    color: var(--card-foreground);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    cursor: pointer;
+}
+
+/* Highlight style: change border and/or background (customize as needed) */
+.article-card.highlight {
+    border: 2px solid var(--accent);
+    background-color: var(--accent);
+    color: var(--accent-foreground);
+}
+
+.article-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.article-card img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.article-content {
+    padding: 1rem;
+    margin-top: auto;
+}
+
+
+footer {
+    padding: 1rem;
+    text-align: center;
+    background-color: var(--accent);
+    color: var(--accent-foreground);
+    margin-top: 100px;
+}
+
+/* Mobile-specific overrides */
+@media (max-width: 768px) {
+    .nav-container,
+    .nav-overlay,
+    .top-title,
+    .nav-menu {
+        border-radius: 0;
+        box-sizing: border-box;
+    }
+}
