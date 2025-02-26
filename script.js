@@ -64,10 +64,7 @@ function animateRSSFeed(timestamp) {
 }
 requestAnimationFrame(animateRSSFeed);
 
-
-
-
-// article building:
+// Article building:
 const content = {
   article: [
     [
@@ -168,7 +165,7 @@ function buildArticles() {
     img.alt = title;
     articleCard.appendChild(img);
 
-    // Create the content container (you can choose h3 or wrap the title in a link if needed)
+    // Create the content container
     const contentDiv = document.createElement("div");
     contentDiv.classList.add("article-content");
     const titleElem = document.createElement("h3");
@@ -192,3 +189,158 @@ function buildArticles() {
 
 // Call the function to build the articles
 buildArticles();
+
+// ------------------------------
+// New Forecast API Integration with Adjustable Grouping, Date Column, and Slider Control
+// ------------------------------
+
+// Coordinates for Birkenes (updated lat and lon)
+const LATITUDE = 58.33072;
+const LONGITUDE = 8.23896;
+const API_URL = `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${LATITUDE}&lon=${LONGITUDE}`;
+
+// Select forecast table elements and grouping slider
+const forecastBody = document.getElementById("forecast-body");
+const forecastStatus = document.getElementById("forecast-status");
+const groupingSlider = document.getElementById("groupingSlider");
+const groupingValueDisplay = document.getElementById("groupingValue");
+
+// Set initial grouping threshold from slider (in hPa)
+let groupingThreshold = parseInt(groupingSlider.value, 10);
+
+// Update grouping threshold when slider changes and reload forecast
+groupingSlider.addEventListener("input", () => {
+  groupingThreshold = parseInt(groupingSlider.value, 10);
+  groupingValueDisplay.textContent = groupingThreshold;
+  loadForecast(); // Reload forecast with new threshold
+});
+
+// Helper: Format ISO time string to HH:MM format
+function formatTime(isoString) {
+  const date = new Date(isoString);
+  const options = { hour: "2-digit", minute: "2-digit" };
+  return date.toLocaleTimeString([], options);
+}
+
+// Helper: Format date as "Wed, 26." (weekday first, then day)
+function formatDate(isoString) {
+  const date = new Date(isoString);
+  const weekday = date.toLocaleDateString("en-US", { weekday: "short" });
+  const day = date.getDate();
+  return `${weekday}, ${day}.`;
+}
+
+// Helper: Determine inline style for a pressure cell based on its value
+function getPressureCellStyle(pressure) {
+  let style = "";
+  if (pressure >= 1035) {
+    // 5+ hPa above 1030: blue background with green border
+    style = "background-color: #0000ff; border: 2px solid #10b981;";
+  } else if (pressure <= 990) {
+    // 5+ hPa below 995: magenta background with red border
+    style = "background-color: #ff00ff; border: 2px solid #ef4444;";
+  } else {
+    // Interpolate between red (995) and green (1030)
+    let clamped = Math.max(995, Math.min(1030, pressure));
+    let fraction = (clamped - 995) / (1030 - 995);
+    let red = Math.round(255 * (1 - fraction));
+    let green = Math.round(255 * fraction);
+    let color = `rgb(${red}, ${green}, 0)`;
+    style = `background-color: ${color};`;
+  }
+  return style;
+}
+
+// Fetch forecast data, group points, and update the table
+async function loadForecast() {
+  try {
+    const response = await fetch(API_URL);
+    if (!response.ok) {
+      throw new Error(`API request failed: ${response.status}`);
+    }
+    const data = await response.json();
+    const timeseries = data.properties.timeseries;
+    if (!timeseries || timeseries.length === 0) {
+      throw new Error("No forecast data available");
+    }
+
+    // Filter for upcoming points (with a 30-minute grace period)
+    const now = new Date();
+    const cutoff = new Date(now.getTime() - 30 * 60 * 1000);
+    const futurePoints = timeseries.filter(
+      (entry) => new Date(entry.time) >= cutoff
+    );
+
+    // Group consecutive points if their pressure difference is within groupingThreshold (in hPa)
+    let groups = [];
+    let currentGroup = [];
+    futurePoints.forEach((point) => {
+      if (currentGroup.length === 0) {
+        currentGroup.push(point);
+      } else {
+        let lastPressure =
+          currentGroup[currentGroup.length - 1].data.instant.details
+            .air_pressure_at_sea_level;
+        let currentPressure =
+          point.data.instant.details.air_pressure_at_sea_level;
+        if (Math.abs(currentPressure - lastPressure) <= groupingThreshold) {
+          currentGroup.push(point);
+        } else {
+          groups.push(currentGroup);
+          currentGroup = [point];
+        }
+      }
+    });
+    if (currentGroup.length > 0) groups.push(currentGroup);
+
+    // Build table rows with a Date column
+    let rowsHTML = "";
+    groups.forEach((group) => {
+      // Format the Date column using the first point in the group
+      const dateDisplay = formatDate(group[0].time);
+
+      // Get start and end times for the group
+      const startTime = group[0].time;
+      const endTime = group[group.length - 1].time;
+      const formattedStart = formatTime(startTime);
+      const formattedEnd = formatTime(endTime);
+      const timeDisplay =
+        group.length > 1
+          ? `${formattedStart} - ${formattedEnd}`
+          : formattedStart;
+
+      // Average values across the group
+      let sumPressure = 0,
+        sumTemp = 0,
+        sumWind = 0;
+      group.forEach((point) => {
+        sumPressure += point.data.instant.details.air_pressure_at_sea_level;
+        sumTemp += point.data.instant.details.air_temperature;
+        sumWind += point.data.instant.details.wind_speed;
+      });
+      const avgPressure = Math.round(sumPressure / group.length);
+      const avgTemp = Math.round(sumTemp / group.length);
+      const avgWind = Math.round(sumWind / group.length);
+
+      // Determine cell style for the pressure value
+      const pressureStyle = getPressureCellStyle(avgPressure);
+
+      rowsHTML += `<tr>
+        <td>${dateDisplay}</td>
+        <td>${timeDisplay}</td>
+        <td style="${pressureStyle}">${avgPressure} hPa</td>
+        <td>${avgTemp} °C</td>
+        <td>${avgWind} m/s</td>
+      </tr>`;
+    });
+
+    forecastBody.innerHTML = rowsHTML;
+    forecastStatus.classList.add("hidden");
+  } catch (error) {
+    console.error("Error loading forecast data:", error);
+    forecastStatus.textContent = "Failed to load forecast data.";
+  }
+}
+
+// Load forecast after the DOM has loaded
+document.addEventListener("DOMContentLoaded", loadForecast);

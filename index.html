@@ -1,83 +1,117 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Makrellgadn</title>
-        <link rel="stylesheet" href="style.css" />
-    </head>
-    <body>
-        <!-- Header -->
-        <header class="site-header">
-            <div class="top-menu">
-                <!-- Left section: Title and Date/Time -->
-                <div class="top-left">
-                    <h1><a href="index.html" class="top-title">Makrellgadn</a></h1>
-                    <div id="current-datetime" class="current-datetime"></div>
-                </div>
-                <!-- Right section: Background image (hidden on small screens) -->
-                <div class="top-right" aria-label="Top Bar Background Image"></div>
-            </div>
-        </header>
-
-        <!-- Main wrapper for Navigation and Content -->
-        <div class="main-wrapper">
-            <!-- Navigation Sidebar -->
-            <nav class="nav-container">
-                <!-- Overlay with toggle button -->
-                <div id="nav-overlay" class="nav-overlay">
-                    <button id="toggle-nav-overlay" aria-label="Toggle Navigation Overlay">
-                        <img src="https://placehold.co/64x64.svg?text=Menu" alt="Menu Icon" class="menu-icon" />
-                    </button>
-                </div>
-                <!-- Navigation menu -->
-                <ul class="nav-menu">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
-            </nav>
-
-            <!-- Main Content Area -->
-            <main class="main-content">
-            <!-- Weather Section -->
-            <section class="weather-section">
-                <h2>Weather Information</h2>
-                <p>
-                Current weather: <span class="weather-info">Sunny, 25°C</span>
-                </p>
-            </section>
-
-            <!-- RSS Feed Section -->
-            <section class="rss-feed-container">
-                <div class="rss-feed">
-                <div class="rss-item">
-                    <a href="#">Breaking News: Event A</a>
-                </div>
-                <div class="rss-item">
-                    <a href="#">Update: Event B</a>
-                </div>
-                <div class="rss-item">
-                    <a href="#">Headline: Event C</a>
-                </div>
-                <div class="rss-item">
-                    <a href="#">News Flash: Event D</a>
-                </div>
-                </div>
-            </section>
-
-            <!-- Articles Grid (dynamically built via JS) -->
-            <section class="articles-grid" id="articles-grid">
-                <!-- Articles will be injected here -->
-            </section>
-            </main>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Makrellgadn</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="site-header">
+      <div class="top-menu">
+        <!-- Left section: Title and Date/Time -->
+        <div class="top-left">
+          <h1><a href="index.html" class="top-title">Makrellgadn</a></h1>
+          <div id="current-datetime" class="current-datetime"></div>
         </div>
+        <!-- Right section: Background image (hidden on small screens) -->
+        <div class="top-right" aria-label="Top Bar Background Image"></div>
+      </div>
+    </header>
 
-        <footer>
-            <p>&copy; 2025 Makrellgadn. All rights reserved.</p>
-        </footer>
+    <!-- Main wrapper for Navigation and Content -->
+    <div class="main-wrapper">
+      <!-- Navigation Sidebar -->
+      <nav class="nav-container">
+        <!-- Overlay with toggle button -->
+        <div id="nav-overlay" class="nav-overlay">
+          <button id="toggle-nav-overlay" aria-label="Toggle Navigation Overlay">
+            <img
+              src="https://placehold.co/64x64.svg?text=Menu"
+              alt="Menu Icon"
+              class="menu-icon"
+            />
+          </button>
+        </div>
+        <!-- Navigation menu -->
+        <ul class="nav-menu">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Services</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
 
-        <script src="script.js"></script>
-    </body>
+      <!-- Main Content Area -->
+      <main class="main-content">
+        <!-- Weather Section -->
+        <section class="weather-section">
+          <h2>Weather Information</h2>
+          <p>
+            Current weather: <span class="weather-info">Sunny, 25°C</span>
+          </p>
+          <!-- Forecast Container: New API integration inserted here -->
+            <div id="forecast-container" class="forecast-container">
+            <h3>Upcoming Pressure Forecast in Birkenes</h3>
+            
+            <!-- Slider Control for Grouping Threshold -->
+            <div id="grouping-controls">
+                <label for="groupingSlider">Grouping Threshold (hPa): </label>
+                <input type="range" id="groupingSlider" min="1" max="10" value="2" />
+                <span id="groupingValue">2</span>
+            </div>
+            
+            <table class="forecast-table">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Pressure (hPa)</th>
+                    <th>Temp (°C)</th>
+                    <th>Wind (m/s)</th>
+                </tr>
+                </thead>
+                <tbody id="forecast-body">
+                <!-- Forecast rows will be injected here by JavaScript -->
+                </tbody>
+            </table>
+            <div id="forecast-status" class="forecast-status">
+                Loading forecast data…
+            </div>
+            </div>
+
+        </section>
+
+        <!-- RSS Feed Section -->
+        <section class="rss-feed-container">
+          <div class="rss-feed">
+            <div class="rss-item">
+              <a href="#">Breaking News: Event A</a>
+            </div>
+            <div class="rss-item">
+              <a href="#">Update: Event B</a>
+            </div>
+            <div class="rss-item">
+              <a href="#">Headline: Event C</a>
+            </div>
+            <div class="rss-item">
+              <a href="#">News Flash: Event D</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Articles Grid (dynamically built via JS) -->
+        <section class="articles-grid" id="articles-grid">
+          <!-- Articles will be injected here -->
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 Makrellgadn. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
 </html>
