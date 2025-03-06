@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Atmosfærisk trykkprognose</title>
+  <meta name="description" content="Sanntidsoppdateringer av trykkdata fra MET Norway." />
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Link til custom CSS -->
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+  <!-- Header Section -->
+  <header class="bg-[#27292b] text-white p-4 flex justify-between items-center">
+    <div>
+      <h1 class="text-2xl font-bold">Atmosfærisk trykkprognose</h1>
+      <p>Sanntidsoppdateringer drevet av MET Norway</p>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto p-4">
+    <!-- Forecast Timeframe Toggle -->
+    <div id="trend-toggle" class="flex justify-center mb-4">
+      <button id="btn-24h" class="toggle-timeframe px-4 py-2 rounded-l">24 timer</button>
+      <button id="btn-7d" class="toggle-timeframe px-4 py-2">7 dager</button>
+      <button id="btn-max" class="toggle-timeframe px-4 py-2 rounded-r">Max</button>
+    </div>
+
+    <!-- Summary Box -->
+    <section id="summary-box" class="bg-white shadow rounded p-4 mb-4">
+      <h2 class="text-xl font-semibold">Nåværende trykk</h2>
+      <p id="current-pressure" class="text-3xl font-bold">-- hPa</p>
+      <p id="pressure-trend" class="text-lg"></p>
+    </section>
+
+    <!-- Chart Section -->
+    <section id="chart-section" class="bg-white shadow rounded p-4 mb-4">
+      <h2 class="text-xl font-semibold mb-2">Trykktrend</h2>
+      <canvas id="pressureChart"></canvas>
+    </section>
+
+    <!-- Detailed Table -->
+    <section id="table-section" class="bg-white shadow rounded p-4">
+      <h2 class="text-xl font-semibold mb-2">Detaljert prognose</h2>
+      <div class="overflow-x-auto">
+        <table id="forecast-table" class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tid</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trykk (hPa)</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trend</th>
+            </tr>
+          </thead>
+          <tbody id="table-body" class="bg-white divide-y divide-gray-200">
+            <!-- Dynamisk innhold fra JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Custom tooltip-container -->
+  <div id="chartjs-tooltip" class="tooltip"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

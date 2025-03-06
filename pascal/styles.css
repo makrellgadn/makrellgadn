@@ -1,0 +1,43 @@
+/* styles.css */
+
+/* Limit the width of the colored line under pressure in the table */
+.pressure-line {
+    width: 50px; /* Juster etter behov */
+  }
+  
+  /* Styling for forecast toggle buttons */
+  .toggle-timeframe {
+    transition: background 0.3s, color 0.3s;
+    cursor: pointer;
+  }
+  .toggle-timeframe.active {
+    background-color: #2563eb; /* Blue */
+    color: white;
+  }
+  .toggle-timeframe:not(.active) {
+    background-color: #e5e7eb; /* Gray-200 */
+    color: #1f2937; /* Gray-800 */
+  }
+  
+  /* Ensure the chart section does not exceed 90% of viewport height */
+  #chart-section {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  /* Styling for the custom tooltip */
+  .tooltip {
+    background: white;
+    color: #000;
+    border-radius: 4px;
+    padding: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    font-family: sans-serif;
+    font-size: 0.875rem;
+    pointer-events: none;
+    transition: opacity 0.1s ease;
+    position: absolute;
+    z-index: 1000;
+    opacity: 0;
+  }
+  
